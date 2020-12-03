@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.ExtendedProperties;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Transcom.Models;
@@ -17,44 +20,50 @@ namespace Transcom.Controllers
     {
 
         [HttpPost]
-        public async Task<IActionResult> Index(string urlName, string videoId)
+        public async Task<IActionResult> Index(string urlName)
         {
+            TempData["Path"] = "";
             //string textTrack = "https://euno-1.api.microsoftstream.com/api/videos/a606d397-8653-4ce5-ba6a-12b5a87a2016/texttracks?api-version=1.4-private";
-            string textTrack = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "/texttracks?api-version=1.4-private";
+            //string textTrack = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "/texttracks?api-version=1.4-private";
 
-            string vttUrl = "";
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(textTrack);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDY5Nzk0MzUsIm5iZiI6MTYwNjk3OTQzNSwiZXhwIjoxNjA2OTgzMzM1LCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lMRGJvOU5acEZIRHhQNDk2L0plcFZOTjI3K3gxM3kyc3lxcWxWTS8rV0hLN3U4QSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6InR6Y1dqUXpVQkUtUUpzRlYtQ1U4QUEiLCJ2ZXIiOiIxLjAifQ.AWOcmMMMaj722KiYTuCoVZZ4G5BrxpsK__gsNZmdgod3iGf1AzTaH90q6c9Uu9albeI2NYR79r6GJX0wETCd5XFGkxhsJ3D_Pb5HH4VdG9qatoWoz62EmigoPg3bZgIyEMB7tL2DPqS40OiOnFwAYbOpiGvWa1edarOgMSV6Fro1fbJV1Ue0TZZdeQJ7mjqA176j-efU74M8Uqms_IhnHPZv8olpRxVUeOnhIwc6FMqIA4HbYTOY6XgffRH_1fj4tUlHMhVTBptSpDZSfPvUry1pcaKZq7i0HjYcIAbBXmzGiYPGh_7JyEzn-A2SpbCLy72gE1KSxoRDpmnkINHuew");
-                HttpResponseMessage response = await client.GetAsync(textTrack);
-                if (response.IsSuccessStatusCode)
-                {
-                    var textTracksResponseString = await response.Content.ReadAsStringAsync();
-                    TextTracksResponse textTracksResponse = JsonConvert.DeserializeObject<TextTracksResponse>(textTracksResponseString);
+            //string vttUrl = "";
+            //using (HttpClient client = new HttpClient())
+            //{
+            //    client.BaseAddress = new Uri(textTrack);
+            //    client.DefaultRequestHeaders.Accept.Clear();
+            //    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            //    client.DefaultRequestHeaders.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDY5Nzk0MzUsIm5iZiI6MTYwNjk3OTQzNSwiZXhwIjoxNjA2OTgzMzM1LCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lMRGJvOU5acEZIRHhQNDk2L0plcFZOTjI3K3gxM3kyc3lxcWxWTS8rV0hLN3U4QSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6InR6Y1dqUXpVQkUtUUpzRlYtQ1U4QUEiLCJ2ZXIiOiIxLjAifQ.AWOcmMMMaj722KiYTuCoVZZ4G5BrxpsK__gsNZmdgod3iGf1AzTaH90q6c9Uu9albeI2NYR79r6GJX0wETCd5XFGkxhsJ3D_Pb5HH4VdG9qatoWoz62EmigoPg3bZgIyEMB7tL2DPqS40OiOnFwAYbOpiGvWa1edarOgMSV6Fro1fbJV1Ue0TZZdeQJ7mjqA176j-efU74M8Uqms_IhnHPZv8olpRxVUeOnhIwc6FMqIA4HbYTOY6XgffRH_1fj4tUlHMhVTBptSpDZSfPvUry1pcaKZq7i0HjYcIAbBXmzGiYPGh_7JyEzn-A2SpbCLy72gE1KSxoRDpmnkINHuew");
+            //    HttpResponseMessage response = await client.GetAsync(textTrack);
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var textTracksResponseString = await response.Content.ReadAsStringAsync();
+            //        TextTracksResponse textTracksResponse = JsonConvert.DeserializeObject<TextTracksResponse>(textTracksResponseString);
 
-                    vttUrl = textTracksResponse?.value?[0].url;
-                }
-            }
+            //        vttUrl = textTracksResponse?.value?[0].url;
+            //    }
+            //}
 
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(vttUrl);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDY5Nzk0MzUsIm5iZiI6MTYwNjk3OTQzNSwiZXhwIjoxNjA2OTgzMzM1LCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lMRGJvOU5acEZIRHhQNDk2L0plcFZOTjI3K3gxM3kyc3lxcWxWTS8rV0hLN3U4QSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6InR6Y1dqUXpVQkUtUUpzRlYtQ1U4QUEiLCJ2ZXIiOiIxLjAifQ.AWOcmMMMaj722KiYTuCoVZZ4G5BrxpsK__gsNZmdgod3iGf1AzTaH90q6c9Uu9albeI2NYR79r6GJX0wETCd5XFGkxhsJ3D_Pb5HH4VdG9qatoWoz62EmigoPg3bZgIyEMB7tL2DPqS40OiOnFwAYbOpiGvWa1edarOgMSV6Fro1fbJV1Ue0TZZdeQJ7mjqA176j-efU74M8Uqms_IhnHPZv8olpRxVUeOnhIwc6FMqIA4HbYTOY6XgffRH_1fj4tUlHMhVTBptSpDZSfPvUry1pcaKZq7i0HjYcIAbBXmzGiYPGh_7JyEzn-A2SpbCLy72gE1KSxoRDpmnkINHuew");
-                HttpResponseMessage response = await client.GetAsync(vttUrl);
-                if (response.IsSuccessStatusCode)
-                {
-                    // Get the vtt file content
-                }
-            }
+            //using (HttpClient client = new HttpClient())
+            //{
+            //    client.BaseAddress = new Uri(vttUrl);
+            //    client.DefaultRequestHeaders.Accept.Clear();
+            //    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            //    client.DefaultRequestHeaders.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDY5Nzk0MzUsIm5iZiI6MTYwNjk3OTQzNSwiZXhwIjoxNjA2OTgzMzM1LCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lMRGJvOU5acEZIRHhQNDk2L0plcFZOTjI3K3gxM3kyc3lxcWxWTS8rV0hLN3U4QSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6InR6Y1dqUXpVQkUtUUpzRlYtQ1U4QUEiLCJ2ZXIiOiIxLjAifQ.AWOcmMMMaj722KiYTuCoVZZ4G5BrxpsK__gsNZmdgod3iGf1AzTaH90q6c9Uu9albeI2NYR79r6GJX0wETCd5XFGkxhsJ3D_Pb5HH4VdG9qatoWoz62EmigoPg3bZgIyEMB7tL2DPqS40OiOnFwAYbOpiGvWa1edarOgMSV6Fro1fbJV1Ue0TZZdeQJ7mjqA176j-efU74M8Uqms_IhnHPZv8olpRxVUeOnhIwc6FMqIA4HbYTOY6XgffRH_1fj4tUlHMhVTBptSpDZSfPvUry1pcaKZq7i0HjYcIAbBXmzGiYPGh_7JyEzn-A2SpbCLy72gE1KSxoRDpmnkINHuew");
+            //    HttpResponseMessage response = await client.GetAsync(vttUrl);
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        // Get the vtt file content
+            //    }
+            //}
 
             //Create Word file
-            string filepath = @"C:\Users\P10494765.AD\Desktop\testing3.docx";
-            CreateWordprocessingDocument(filepath);
+            string fileName = System.IO.Path.GetRandomFileName()+ ".docx";
+        //    string filepath = String.Format(@"{0}\{1}", System.IO.Path.GetDirectoryName(
+        //System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase), fileName);
+
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+            // string filepath = @"C:\Users\P10494765.AD\Desktop\testing3.docx";
+            CreateWordprocessingDocument(path);
 
             //using (var client = new WebClient())
             //{
@@ -112,11 +121,37 @@ namespace Transcom.Controllers
             //}
 
             //Console.ReadLine();
-
-
+         
+            TempData["Path"] = path;
             return View();
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Download(string path)
+        {           
+            var memory = new MemoryStream();       
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return File(memory, GetMimeTypes()[ext], Path.GetFileName(path));
+        }
+
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+        {
+            {".txt", "text/plain"},
+            {".pdf", "application/pdf"},
+            {".doc", "application/vnd.ms-word"},
+            {".docx", "application/vnd.ms-word"},
+            {".png", "image/png"},
+            {".jpg", "image/jpeg"}
+        };
+        }
 
         public static void CreateWordprocessingDocument(string filepath)
         {
@@ -145,14 +180,16 @@ namespace Transcom.Controllers
                 ParagraphMarkRunProperties paragraphMarkRunProperties1 = new ParagraphMarkRunProperties();
 
                 paragraphProperties1.Append(paragraphStyleId1);
-                paragraphProperties1.Append(fontSize1);
+                //paragraphProperties1.Append(fontSize1);
                 paragraphProperties1.Append(justification1);
 
                 paragraphProperties1.Append(paragraphMarkRunProperties1);
 
                 Run run = new Run();
                 RunProperties runProperties1 = new RunProperties();
+                FontSize fontSize2 = new FontSize() { Val = "36" };
 
+                runProperties1.Append(fontSize2);
                 Text text = new Text() { Text = "The OpenXML SDK rocks!" };
 
                 // siga a ordem 
@@ -188,10 +225,45 @@ namespace Transcom.Controllers
 
                 para2.Append(paragraphProperties2);
                 para2.Append(run2);
-
+                body.Append(para2);
                 // todos os 2 paragrafos no main body
 
-                body.Append(para2);
+
+                Paragraph paragraph1 = new Paragraph() { RsidParagraphAddition = "00EA7FFB", RsidParagraphProperties = "00EA7FFB", RsidRunAdditionDefault = "00EA7FFB" };
+
+                ParagraphProperties paragraphProperties3 = new ParagraphProperties();
+                ParagraphStyleId paragraphStyleId3 = new ParagraphStyleId() { Val = "ListParagraph" };
+
+                NumberingProperties numberingProperties3 = new NumberingProperties();
+                NumberingLevelReference numberingLevelReference3 = new NumberingLevelReference() { Val = 0 };
+                NumberingId numberingId1 = new NumberingId() { Val = 4 };
+
+                numberingProperties3.Append(numberingLevelReference3);
+                numberingProperties3.Append(numberingId1);
+
+                paragraphProperties3.Append(paragraphStyleId3);
+                paragraphProperties3.Append(numberingProperties3);
+
+                Run run1 = new Run();
+                Text text1 = new Text() { Space = SpaceProcessingModeValues.Preserve };
+                text1.Text = "Item New Name ";
+
+                run1.AppendChild(text1);
+                run1.AppendChild(new Break());
+                run1.AppendChild(new Text("Item New Name "));
+                run1.AppendChild(new Break());
+                run1.AppendChild(new Text("Item New Name 3"));
+                run1.AppendChild(new Break());
+                run1.AppendChild(new Text("Item New Name 4"));
+                run1.AppendChild(new Break());
+                run1.AppendChild(new Text("Item New Name 5"));
+                run1.AppendChild(new Break());
+
+                paragraph1.Append(paragraphProperties3);
+                paragraph1.Append(run1);
+                body.Append(paragraph1);
+
+
 
 
                 doc.Append(body);
@@ -280,6 +352,8 @@ namespace Transcom.Controllers
             );
             settingsPart.Settings.Save();
         }
+    
+
         public IActionResult Index()
         {
             return View();
