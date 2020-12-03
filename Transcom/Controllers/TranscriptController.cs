@@ -24,8 +24,7 @@ namespace Transcom.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string urlName)
         {
-            TempData["Path"] = "";
-            string textTrack = "https://euno-1.api.microsoftstream.com/api/videos/a606d397-8653-4ce5-ba6a-12b5a87a2016/texttracks?api-version=1.4-private";
+            string textTrack = "https://euno-1.api.microsoftstream.com/api/videos/d3813380-988e-4445-809e-9893ad987179/texttracks?api-version=1.4-private";
             //string textTrack = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "/texttracks?api-version=1.4-private";
 
             string vttUrl = "";
@@ -34,7 +33,7 @@ namespace Transcom.Controllers
                 client.BaseAddress = new Uri(textTrack);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDY5OTk5MTYsIm5iZiI6MTYwNjk5OTkxNiwiZXhwIjoxNjA3MDAzODE2LCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lJZytkV2RCbjlGMS8yVnhEOFJZRFhZNzhiQmVpYk02SkoxNk5tUi8zY2NUT2hrQSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6IlVFb205RzRRWVVPOTVPU21PTGxJQUEiLCJ2ZXIiOiIxLjAifQ.MfOWzI1HzJmHmJTZA0Tew8rV095qkzNSN0VQ0bOIXbh6qVkoDu6B2fa6Mdg2IJddWANvKNJf80H4dZeACLMKRjhKGCz4fJMJh44Y-yoksWkYQSB_81Fh0CHQeJzckvcUjopO98VzqyXIkWGPLao-K5OmwHAhk7gHo4oA9Iixh7icG2MgobjM9le_BAfo7y3UbsGj2iQ5pwPUuTgOnhFPQ3HhdrULxfLvwPHhnYd5xxPpr2-wQffjSjuClCZn5KjZgdzRNwgiC8ZijtcFtBScuSjco1h_D4BxrT0vM-MSVXbl786FyYOzdYwwN1JcFEwFyi9qFEwcY2uUc4ylO6-Kew");
+                client.DefaultRequestHeaders.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDcwMDMzMjMsIm5iZiI6MTYwNzAwMzMyMywiZXhwIjoxNjA3MDA3MjIzLCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lKajIvTjVIUTQ5dmp5Ti9iNWFYbHhWTEZCRHhYeU53L0poRFdvVldoa0JVejFJQSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6ImtyRXhJNHl1Y2tLVi1vbURTdEJPQUEiLCJ2ZXIiOiIxLjAifQ.bvUmsidRd8GPBlUv1jG_ip3wfmyZ8yB4i5QWZdgAAPhT5MPf-uaeTfRJJGa0L2JzzJmJy2bzkWdglY0ACRdWPojeLLc2yMNUCNVLCJKp5r_GVE4QNe6jW3CfFOhespzD4aJarrbDvMU1Um-jTmgHYzHAVnNKfpGssKPGpDXkrZSlB6zdTCuMHAtpsnmGvczilUsZCZdQqR1BxIG5MLRmQcLnD2NPT3JAFPoud2ReABbvg76AyUcIAaYwdhr4oZh2IsQKMf0Rfm7Lksnd1Hd-Aio3DVJzpD4cboNwZbOVd6NPUyg_e_1KDatDqY5GSCsU4SmJKwrye4NimWZm_OMGYg");
                 HttpResponseMessage response = await client.GetAsync(textTrack);
                 if (response.IsSuccessStatusCode)
                 {
@@ -44,27 +43,12 @@ namespace Transcom.Controllers
                 }
             }
 
-            //using (HttpClient client = new HttpClient())
-            //{
-            //    client.BaseAddress = new Uri(vttUrl);
-            //    client.DefaultRequestHeaders.Accept.Clear();
-            //    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            //    client.DefaultRequestHeaders.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDY5ODU4NjAsIm5iZiI6MTYwNjk4NTg2MCwiZXhwIjoxNjA2OTg5NzYwLCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOFJBQUFBb2t0ZlFQQUNtbi9ROE1hWUp1MTduMldaOTE3QVlpY2wxRGkvS0NxdVRzTT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiY2Y1M2ZjZTgtZGVmNi00YWViLThkMzAtYjE1OGU3YjFjZjgzIiwiYXBwaWRhY3IiOiIyIiwiZmFtaWx5X25hbWUiOiJEaGFuZGUiLCJnaXZlbl9uYW1lIjoiRGlwYWsiLCJpcGFkZHIiOiI4Mi4yMDMuMzMuMTM0IiwibmFtZSI6IkRoYW5kZSwgRGlwYWsgKENhcGl0YSBTb2Z0d2FyZSkiLCJvaWQiOiJiYTdkYjc1YS0yZWY1LTQyNWYtOGVjNi1mOTg2YTFkMzI2MjIiLCJvbnByZW1fc2lkIjoiUy0xLTUtMjEtMjM4NTc0OTg3LTI5MzUzODY4MTktMjA5MzY4NjEwLTI0Nzc4NjAiLCJwdWlkIjoiMTAwMzNGRkZBRkRDRTIyRSIsInJoIjoiMC5BQUFBZzYzYUh1LXlQVWlCOFN4SWFDOUE3T2o4VThfMjN1dEtqVEN4V09leHo0TUNBSTguIiwic2NwIjoiYWNjZXNzX21pY3Jvc29mdHN0cmVhbV9zZXJ2aWNlIiwic3ViIjoiTlZuN2dEWVZOYU41UW43dE1oS1VnSW1VcDhQU1lVOFBGWHhsSVRHYnpRZyIsInRpZCI6IjFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYyIsInVuaXF1ZV9uYW1lIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInVwbiI6IlAxMDQ3OTE1NkBjYXBpdGEuY28udWsiLCJ1dGkiOiJ2MGlNeWQ1VzRFYUNGSHZvSUhKQ0FBIiwidmVyIjoiMS4wIn0.eP7sqenBiO19DhrMFuuyY8-71B3mSzYI-iZxQd1UDHKPuzWmAL2wj0S4zVJhTVUpKVRLqqCVTGGvs8taGhfJ2E_L7OOXvNnzNw7Quc9xc88cfON2v-0A1gnwAPPTmE2JcVbQxg3dhKKvEWDwOkLAkSlaBOvh9oP_9fL9qhYM0qaRkeuIAy9AjuAmEpki4iL4VX6gSoPV7dKmqvgeZDgLLar3wD2LxWJqiXqYmpgHTm5mAFwfhaboZA1_w1IFyDqG7hIO-P6RlSZTx9fHfV3gZEmW8u0FXuBVNV-Rc8FtdITtzJQbDosOlk8S8yH67uFmt_aRJ5zSibo_ueUModSerQ");
-            //    HttpResponseMessage response = await client.GetAsync(vttUrl);
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        var vttResponseString = await response.Content.ReadAsStringAsync();
-
-            //        var vttResponse = JsonConvert.DeserializeObject<string>(vttResponseString);
-            //    }
-            //}
-
             using (var client = new WebClient())
             {
 
                 client.Headers.Clear();
                 
-                client.Headers.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDY5OTk5MTYsIm5iZiI6MTYwNjk5OTkxNiwiZXhwIjoxNjA3MDAzODE2LCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lJZytkV2RCbjlGMS8yVnhEOFJZRFhZNzhiQmVpYk02SkoxNk5tUi8zY2NUT2hrQSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6IlVFb205RzRRWVVPOTVPU21PTGxJQUEiLCJ2ZXIiOiIxLjAifQ.MfOWzI1HzJmHmJTZA0Tew8rV095qkzNSN0VQ0bOIXbh6qVkoDu6B2fa6Mdg2IJddWANvKNJf80H4dZeACLMKRjhKGCz4fJMJh44Y-yoksWkYQSB_81Fh0CHQeJzckvcUjopO98VzqyXIkWGPLao-K5OmwHAhk7gHo4oA9Iixh7icG2MgobjM9le_BAfo7y3UbsGj2iQ5pwPUuTgOnhFPQ3HhdrULxfLvwPHhnYd5xxPpr2-wQffjSjuClCZn5KjZgdzRNwgiC8ZijtcFtBScuSjco1h_D4BxrT0vM-MSVXbl786FyYOzdYwwN1JcFEwFyi9qFEwcY2uUc4ylO6-Kew");
+                client.Headers.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDcwMDMzMjMsIm5iZiI6MTYwNzAwMzMyMywiZXhwIjoxNjA3MDA3MjIzLCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lKajIvTjVIUTQ5dmp5Ti9iNWFYbHhWTEZCRHhYeU53L0poRFdvVldoa0JVejFJQSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6ImtyRXhJNHl1Y2tLVi1vbURTdEJPQUEiLCJ2ZXIiOiIxLjAifQ.bvUmsidRd8GPBlUv1jG_ip3wfmyZ8yB4i5QWZdgAAPhT5MPf-uaeTfRJJGa0L2JzzJmJy2bzkWdglY0ACRdWPojeLLc2yMNUCNVLCJKp5r_GVE4QNe6jW3CfFOhespzD4aJarrbDvMU1Um-jTmgHYzHAVnNKfpGssKPGpDXkrZSlB6zdTCuMHAtpsnmGvczilUsZCZdQqR1BxIG5MLRmQcLnD2NPT3JAFPoud2ReABbvg76AyUcIAaYwdhr4oZh2IsQKMf0Rfm7Lksnd1Hd-Aio3DVJzpD4cboNwZbOVd6NPUyg_e_1KDatDqY5GSCsU4SmJKwrye4NimWZm_OMGYg");
                 var content = client.DownloadData(vttUrl);
                 using (var stream = new MemoryStream(content))
                 {
@@ -107,52 +91,8 @@ namespace Transcom.Controllers
                     }
                 }
             }
-
-            //var parser = new SubtitlesParser.Classes.Parsers.SubParser();
-
-            //var allFiles = BrowseTestSubtitlesFiles();
-            //foreach (var file in allFiles)
-            //{
-            //    var fileName = Path.GetFileName(file);
-            //    using (var fileStream = new FileStream(@file, FileMode.Open, FileAccess.Read))
-            //    {
-            //        try
-            //        {
-            //            var mostLikelyFormat = parser.GetMostLikelyFormat(fileName);
-            //            var items = parser.ParseStream(fileStream, Encoding.UTF8, mostLikelyFormat);
-            //            if (items.Any())
-            //            {
-            //                Console.WriteLine("Parsing of file {0}: SUCCESS ({1} items - {2}% corrupted)",
-            //                    fileName, items.Count, (items.Count(it => it.StartTime <= 0 || it.EndTime <= 0) * 100) / items.Count);
-            //                /*foreach (var item in items)
-            //                {
-            //                    Console.WriteLine(item);
-            //                }*/
-            //                /*var duplicates =
-            //                    items.GroupBy(it => new {it.StartTime, it.EndTime}).Where(grp => grp.Count() > 1);
-            //                Console.WriteLine("{0} duplicate items", duplicates.Count());*/
-
-            //            }
-            //            else
-            //            {
-            //                //Console.WriteLine("Parsing of file {0}: SUCCESS (No items found!)", fileName, items.Count);
-            //            }
-
-            //        }
-            //        catch (Exception ex)
-            //        {
-
-            //        }
-            //    }
-                //    //    Console.WriteLine("----------------------");
-                //}
-
-            //Console.ReadLine();
-         
-            TempData["Path"] = path;
             return View();
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Download(string path)
