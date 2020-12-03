@@ -23,7 +23,7 @@ namespace Transcom.Controllers
     {
         [HttpPost]
         public async Task<IActionResult> Index(string urlName)
-        {
+        {         
             string textTrack = "https://euno-1.api.microsoftstream.com/api/videos/d3813380-988e-4445-809e-9893ad987179/texttracks?api-version=1.4-private";
             //string textTrack = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "/texttracks?api-version=1.4-private";
 
@@ -47,7 +47,7 @@ namespace Transcom.Controllers
             {
 
                 client.Headers.Clear();
-                
+
                 client.Headers.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDcwMDMzMjMsIm5iZiI6MTYwNzAwMzMyMywiZXhwIjoxNjA3MDA3MjIzLCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lKajIvTjVIUTQ5dmp5Ti9iNWFYbHhWTEZCRHhYeU53L0poRFdvVldoa0JVejFJQSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6ImtyRXhJNHl1Y2tLVi1vbURTdEJPQUEiLCJ2ZXIiOiIxLjAifQ.bvUmsidRd8GPBlUv1jG_ip3wfmyZ8yB4i5QWZdgAAPhT5MPf-uaeTfRJJGa0L2JzzJmJy2bzkWdglY0ACRdWPojeLLc2yMNUCNVLCJKp5r_GVE4QNe6jW3CfFOhespzD4aJarrbDvMU1Um-jTmgHYzHAVnNKfpGssKPGpDXkrZSlB6zdTCuMHAtpsnmGvczilUsZCZdQqR1BxIG5MLRmQcLnD2NPT3JAFPoud2ReABbvg76AyUcIAaYwdhr4oZh2IsQKMf0Rfm7Lksnd1Hd-Aio3DVJzpD4cboNwZbOVd6NPUyg_e_1KDatDqY5GSCsU4SmJKwrye4NimWZm_OMGYg");
                 var content = client.DownloadData(vttUrl);
                 using (var stream = new MemoryStream(content))
@@ -91,6 +91,12 @@ namespace Transcom.Controllers
                     }
                 }
             }
+            //Create Word file
+            string fileName = System.IO.Path.GetRandomFileName() + ".docx";
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+            CreateWordprocessingDocument(path);
+            TempData["Path"] = "";
+            TempData["Path"] = path;
             return View();
         }
 
