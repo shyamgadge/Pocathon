@@ -16,41 +16,80 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Transcom.Models;
 using SubtitlesParser;
+using Newtonsoft.Json.Linq;
 
 namespace Transcom.Controllers
 {
     public class TranscriptController : Controller
     {
+
+        
+
         [HttpPost]
         public async Task<IActionResult> Index(string urlName)
         {
+            string title = "Transcom";
+            List<string> sentences = new List<string>();
             string[] s = urlName.Split('/');
             string videoId = s.Last();
+            string token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDcwMjA3MDQsIm5iZiI6MTYwNzAyMDcwNCwiZXhwIjoxNjA3MDI0NjA0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOFJBQUFBZUZqYmtEWFpYNlNYUGE4K2tCckxVUFhJa3Z4bWEyME12d3krTHdiWFF4dz0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiY2Y1M2ZjZTgtZGVmNi00YWViLThkMzAtYjE1OGU3YjFjZjgzIiwiYXBwaWRhY3IiOiIyIiwiZmFtaWx5X25hbWUiOiJHYWRnZSIsImdpdmVuX25hbWUiOiJTaHlhbSIsImlwYWRkciI6IjEwMy4xMTAuMjU0LjE0MCIsIm5hbWUiOiJHYWRnZSwgU2h5YW0gKENhcGl0YSBTb2Z0d2FyZSkiLCJvaWQiOiIzNDYxMDZmMy03YWE5LTRhNmYtOGNkMi1kZTNlNjNkOWU3OTIiLCJvbnByZW1fc2lkIjoiUy0xLTUtMjEtMjM4NTc0OTg3LTI5MzUzODY4MTktMjA5MzY4NjEwLTI1NTc1MDQiLCJwdWlkIjoiMTAwMzIwMDA0OTIyQUJDQyIsInJoIjoiMC5BQUFBZzYzYUh1LXlQVWlCOFN4SWFDOUE3T2o4VThfMjN1dEtqVEN4V09leHo0TUNBT2cuIiwic2NwIjoiYWNjZXNzX21pY3Jvc29mdHN0cmVhbV9zZXJ2aWNlIiwic3ViIjoiVy15ZlNoMHZQZEt4Q2NCR1hMVUlEeG5jUHJTdXBRNnBpSGt0VXc5alAyYyIsInRpZCI6IjFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYyIsInVuaXF1ZV9uYW1lIjoiUDEwNDk3Mjc3QGNhcGl0YS5jby51ayIsInVwbiI6IlAxMDQ5NzI3N0BjYXBpdGEuY28udWsiLCJ1dGkiOiJtSktFOHNadmxrLWV4dzkyMXhzN0FBIiwidmVyIjoiMS4wIn0.KnEP7oB7aZXDoJEKHYoX3vi4O4jcw0u__FXof6Us5jbXkghLSlYlhHT86VIPEUdY6qTijmoCn6JaD9I8vfwO_FmX4f7PxZl7R2j5XvGfEZ-6RsGax6uJ0HfaTGCbp1dQD2xovY6o2Kn7yuP57leNqY2XFzhs5k_ZyHrGdHaFyDUTSpDJQhtInH9VpCfds5y3TxAubJSJTUE4VJnItlQHrIJyaBO7Zrmo42-SH9wHCnoasHTHwKHBbhM5g_UpTREhaUK6-FSv9Hp2jZEfc3yZAzo7v-wUSjukTT7R1EsUSz3hplLu5WKt1iheGRPywW6pzji2BF8xlq_nYly5XWV0QA";
 
-            string textTrack = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "/texttracks?api-version=1.4-private";
+            string textTrackUrl = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "/texttracks?api-version=1.4-private";
+            string titleUrl = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "?$expand=creator,tokens,status,liveEvent,extensions&api-version=1.4-private";
 
             string vttUrl = "";
-            using (HttpClient client = new HttpClient())
+         
+            HttpResponseMessage urlResponse = await GetHttpResponse(textTrackUrl, token);
+            if (urlResponse.IsSuccessStatusCode)
             {
-                client.BaseAddress = new Uri(textTrack);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDcwMDgxNDYsIm5iZiI6MTYwNzAwODE0NiwiZXhwIjoxNjA3MDEyMDQ2LCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lHQU1YYVBvSk11Y3pEcjFmMGFJd3dKYmNXdDNIZVdnKzk4TUhOZFBmZFYvTkJrQSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6ImhTVEVYdUVYZ0VhSk1xVGtKaVJOQUEiLCJ2ZXIiOiIxLjAifQ.O2gET2TM84G7yfXNJPFA_EG-Y9gj5xKrPXMRODRdmfPe6MtOIs3zATI_YXmi_jGAP5aDERG7sIrva7x058SlhJaL5V7LLJk-QP6Bniug6xYhSg4MglmenbRiSjZDy51fuMxOQkiKKmCWLoQGfsa8NdbKvNHKrR8FfOTXy_6H3JbxbhNYOSwgLNSIthMewesqLrEcR8itrRysR18ueldLhhZpA1iioPnA-WVqubeTXBfC7lMhbV9rw7cLo4jQ4Hgd-vJCzqpVuB9znkBGeEGqjZ1L2L8Ig2WxGkj7Jn8rjGj832MZZv1cfQld4MaF8vVm6H7YqXhfMpzYGOjBkuGiIg");
-                HttpResponseMessage response = await client.GetAsync(textTrack);
-                if (response.IsSuccessStatusCode)
-                {
-                    var textTracksResponseString = await response.Content.ReadAsStringAsync();
-                    TextTracksResponse textTracksResponse = JsonConvert.DeserializeObject<TextTracksResponse>(textTracksResponseString);
-                    vttUrl = textTracksResponse?.value?[0].url;
-                }
+                var textTracksResponseString = await urlResponse.Content.ReadAsStringAsync();
+                TextTracksResponse textTracksResponse = JsonConvert.DeserializeObject<TextTracksResponse>(textTracksResponseString);
+                vttUrl = textTracksResponse?.value?[0].url;
             }
 
+           
+            HttpResponseMessage titleResponse = await GetHttpResponse(titleUrl, token);
+            if (titleResponse.IsSuccessStatusCode)
+            {
+                var textTracksResponseString = await titleResponse.Content.ReadAsStringAsync();
+                var responseJObject = JObject.Parse(textTracksResponseString);
+                title = (string)responseJObject["name"];
+            }
+
+            sentences = ExtractVttContent( token, vttUrl);
+
+            //Create Word file
+            string fileName = title + ".docx";
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+            CreateWordprocessingDocument(path, title, sentences);
+            TempData["Path"] = "";
+            TempData["Path"] = path;
+            return View();
+        }
+
+        private async Task<HttpResponseMessage> GetHttpResponse(string url, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(url);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Add("authorization", token);
+                HttpResponseMessage response = await client.GetAsync(url);
+
+                return response;
+            }
+        }
+
+        private static List<string> ExtractVttContent( string token, string vttUrl)
+        {
+            List<string> sentences = new List<string>();
             using (var client = new WebClient())
             {
 
                 client.Headers.Clear();
 
-                client.Headers.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDcwMDgxNDYsIm5iZiI6MTYwNzAwODE0NiwiZXhwIjoxNjA3MDEyMDQ2LCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lHQU1YYVBvSk11Y3pEcjFmMGFJd3dKYmNXdDNIZVdnKzk4TUhOZFBmZFYvTkJrQSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6ImhTVEVYdUVYZ0VhSk1xVGtKaVJOQUEiLCJ2ZXIiOiIxLjAifQ.O2gET2TM84G7yfXNJPFA_EG-Y9gj5xKrPXMRODRdmfPe6MtOIs3zATI_YXmi_jGAP5aDERG7sIrva7x058SlhJaL5V7LLJk-QP6Bniug6xYhSg4MglmenbRiSjZDy51fuMxOQkiKKmCWLoQGfsa8NdbKvNHKrR8FfOTXy_6H3JbxbhNYOSwgLNSIthMewesqLrEcR8itrRysR18ueldLhhZpA1iioPnA-WVqubeTXBfC7lMhbV9rw7cLo4jQ4Hgd-vJCzqpVuB9znkBGeEGqjZ1L2L8Ig2WxGkj7Jn8rjGj832MZZv1cfQld4MaF8vVm6H7YqXhfMpzYGOjBkuGiIg");
+                client.Headers.Add("authorization", token);
                 var content = client.DownloadData(vttUrl);
                 using (var stream = new MemoryStream(content))
                 {
@@ -58,7 +97,7 @@ namespace Transcom.Controllers
                     stream.WriteTo(file);
                     file.Close();
 
-                    var parser = new SubtitlesParser.Classes.Parsers.SubParser();
+                    SubtitlesParser.Classes.Parsers.SubParser parser = new SubtitlesParser.Classes.Parsers.SubParser();
 
                     using (var fileStream = new FileStream("C:\\file.txt", FileMode.Open, FileAccess.Read))
                     {
@@ -66,7 +105,7 @@ namespace Transcom.Controllers
                         {
                             var mostLikelyFormat = parser.GetMostLikelyFormat(fileStream.Name);
                             var items = parser.ParseStream(fileStream, Encoding.UTF8, mostLikelyFormat);
-                            List<string> sentences = new List<string>();
+
                             string sentence = string.Empty;
                             foreach (var item in items)
                             {
@@ -93,19 +132,13 @@ namespace Transcom.Controllers
                     }
                 }
             }
-            //Create Word file
-            string fileName = System.IO.Path.GetRandomFileName() + ".docx";
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
-            CreateWordprocessingDocument(path);
-            TempData["Path"] = "";
-            TempData["Path"] = path;
-            return View();
+            return sentences;
         }
 
         [HttpGet]
         public async Task<IActionResult> Download(string path)
-        {           
-            var memory = new MemoryStream();       
+        {
+            var memory = new MemoryStream();
             using (var stream = new FileStream(path, FileMode.Open))
             {
                 await stream.CopyToAsync(memory);
@@ -128,7 +161,7 @@ namespace Transcom.Controllers
         };
         }
 
-        public static void CreateWordprocessingDocument(string filepath)
+        public void CreateWordprocessingDocument(string filepath, string title, List<string> conversation)
         {
             // Create a document by supplying the filepath. 
             using (WordprocessingDocument wordDocument =
@@ -165,7 +198,7 @@ namespace Transcom.Controllers
                 FontSize fontSize2 = new FontSize() { Val = "36" };
 
                 runProperties1.Append(fontSize2);
-                Text text = new Text() { Text = "The OpenXML SDK rocks!" };
+                Text text = new Text() { Text = title };
 
                 // siga a ordem 
                 run.Append(runProperties1);
@@ -173,75 +206,19 @@ namespace Transcom.Controllers
                 para.Append(paragraphProperties1);
                 para.Append(run);
                 body.Append(para);
+                //Paragraph titlePara = CreateParagraph( title, JustificationValues.Center);
+                //body.Append(titlePara);
 
-                // 2 paragrafo
-                Paragraph para2 = new Paragraph();
+                // "Here are the discussed points:" Paragraph
+                Paragraph pointsHeaderPara = CreateParagraph("Here are the discussed points:", JustificationValues.Left);
 
-                ParagraphProperties paragraphProperties2 = new ParagraphProperties();
-                ParagraphStyleId paragraphStyleId2 = new ParagraphStyleId() { Val = "Bold" };
-                Justification justification2 = new Justification() { Val = JustificationValues.Right };
-                FontSize fontSize = new FontSize() { Val = "50" };
-                ParagraphMarkRunProperties paragraphMarkRunProperties2 = new ParagraphMarkRunProperties();
-                NumberingFormat format = new NumberingFormat() { Val = NumberFormatValues.Bullet };
+                body.Append(pointsHeaderPara);
 
-                paragraphProperties2.Append(paragraphStyleId2);
-                paragraphProperties2.Append(justification2);
-                paragraphProperties2.Append(paragraphMarkRunProperties2);
-                paragraphProperties2.Append(fontSize);
-                paragraphProperties2.Append(format);
-
-                Run run2 = new Run();
-                RunProperties runProperties3 = new RunProperties();
-                Text text2 = new Text();
-                text2.Text = "Teste aqui";
-
-                run2.AppendChild(new Break());
-                run2.AppendChild(runProperties3);
-                run2.AppendChild(text2);
-                run2.AppendChild(new Break());
-
-                para2.Append(paragraphProperties2);
-                para2.Append(run2);
-                body.Append(para2);
-                // todos os 2 paragrafos no main body
-
-
-                Paragraph paragraph1 = new Paragraph() { RsidParagraphAddition = "00EA7FFB", RsidParagraphProperties = "00EA7FFB", RsidRunAdditionDefault = "00EA7FFB" };
-
-                ParagraphProperties paragraphProperties3 = new ParagraphProperties();
-                ParagraphStyleId paragraphStyleId3 = new ParagraphStyleId() { Val = "ListParagraph" };
-
-                NumberingProperties numberingProperties3 = new NumberingProperties();
-                NumberingLevelReference numberingLevelReference3 = new NumberingLevelReference() { Val = 0 };
-                NumberingId numberingId1 = new NumberingId() { Val = 4 };
-
-                numberingProperties3.Append(numberingLevelReference3);
-                numberingProperties3.Append(numberingId1);
-
-                paragraphProperties3.Append(paragraphStyleId3);
-                paragraphProperties3.Append(numberingProperties3);
-
-                Run run1 = new Run();
-                Text text1 = new Text() { Space = SpaceProcessingModeValues.Preserve };
-                text1.Text = "Item New Name ";
-
-                run1.AppendChild(text1);
-                run1.AppendChild(new Break());
-                run1.AppendChild(new Text("Item New Name "));
-                run1.AppendChild(new Break());
-                run1.AppendChild(new Text("Item New Name 3"));
-                run1.AppendChild(new Break());
-                run1.AppendChild(new Text("Item New Name 4"));
-                run1.AppendChild(new Break());
-                run1.AppendChild(new Text("Item New Name 5"));
-                run1.AppendChild(new Break());
-
-                paragraph1.Append(paragraphProperties3);
-                paragraph1.Append(run1);
-                body.Append(paragraph1);
-
-
-
+                foreach (var line in conversation)
+                {
+                    Paragraph paragraph1 = CreateParagraphForBullets(line);
+                    body.Append(paragraph1);
+                }
 
                 doc.Append(body);
 
@@ -251,6 +228,46 @@ namespace Transcom.Controllers
             }
         }
 
+        private Paragraph CreateParagraph(string text, JustificationValues justification)
+        {
+            Paragraph paragraph = new Paragraph(
+                        new ParagraphProperties(
+                          new ParagraphStyleId() { Val = "Bold" },
+                          new Justification() { Val = justification },
+                          new ParagraphMarkRunProperties(),
+                          new FontSize() { Val = "12" }
+                          ),
+                        new Run(
+                          new RunProperties(),
+                          new Text(text) { Space = SpaceProcessingModeValues.Preserve }));
+
+            return paragraph;
+        }
+
+        private Paragraph CreateParagraph(string text)
+        {
+            Paragraph paragraph = new Paragraph(
+            new ParagraphProperties(
+              new NumberingProperties(
+                new NumberingLevelReference() { Val = 0 },
+                new NumberingId() { Val = 2 })),
+            new Run(
+              new RunProperties(),
+              new Text(text) { Space = SpaceProcessingModeValues.Preserve }));
+            return paragraph;
+        }
+        private Paragraph CreateParagraphForBullets(string text)
+        {
+            Paragraph paragraph = new Paragraph(
+            new ParagraphProperties(
+              new NumberingProperties(
+                new NumberingLevelReference() { Val = 0 },
+                new NumberingId() { Val = 2 })),
+            new Run(
+              new RunProperties(),
+              new Text(text) { Space = SpaceProcessingModeValues.Preserve }));
+            return paragraph;
+        }
         private static void GenerateHeader(HeaderPart part)
         {
             Header header1 = new Header() { MCAttributes = new MarkupCompatibilityAttributes() { Ignorable = "w14 w15 w16se wp14" } };
@@ -329,7 +346,7 @@ namespace Transcom.Controllers
             );
             settingsPart.Settings.Save();
         }
-    
+
 
         public IActionResult Index()
         {
