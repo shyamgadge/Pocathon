@@ -23,38 +23,38 @@ namespace Transcom.Controllers
         public async Task<IActionResult> Index(string urlName)
         {
             TempData["Path"] = "";
-            //string textTrack = "https://euno-1.api.microsoftstream.com/api/videos/a606d397-8653-4ce5-ba6a-12b5a87a2016/texttracks?api-version=1.4-private";
+            string textTrack = "https://euno-1.api.microsoftstream.com/api/videos/a606d397-8653-4ce5-ba6a-12b5a87a2016/texttracks?api-version=1.4-private";
             //string textTrack = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "/texttracks?api-version=1.4-private";
 
-            //string vttUrl = "";
-            //using (HttpClient client = new HttpClient())
-            //{
-            //    client.BaseAddress = new Uri(textTrack);
-            //    client.DefaultRequestHeaders.Accept.Clear();
-            //    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            //    client.DefaultRequestHeaders.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDY5Nzk0MzUsIm5iZiI6MTYwNjk3OTQzNSwiZXhwIjoxNjA2OTgzMzM1LCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lMRGJvOU5acEZIRHhQNDk2L0plcFZOTjI3K3gxM3kyc3lxcWxWTS8rV0hLN3U4QSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6InR6Y1dqUXpVQkUtUUpzRlYtQ1U4QUEiLCJ2ZXIiOiIxLjAifQ.AWOcmMMMaj722KiYTuCoVZZ4G5BrxpsK__gsNZmdgod3iGf1AzTaH90q6c9Uu9albeI2NYR79r6GJX0wETCd5XFGkxhsJ3D_Pb5HH4VdG9qatoWoz62EmigoPg3bZgIyEMB7tL2DPqS40OiOnFwAYbOpiGvWa1edarOgMSV6Fro1fbJV1Ue0TZZdeQJ7mjqA176j-efU74M8Uqms_IhnHPZv8olpRxVUeOnhIwc6FMqIA4HbYTOY6XgffRH_1fj4tUlHMhVTBptSpDZSfPvUry1pcaKZq7i0HjYcIAbBXmzGiYPGh_7JyEzn-A2SpbCLy72gE1KSxoRDpmnkINHuew");
-            //    HttpResponseMessage response = await client.GetAsync(textTrack);
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        var textTracksResponseString = await response.Content.ReadAsStringAsync();
-            //        TextTracksResponse textTracksResponse = JsonConvert.DeserializeObject<TextTracksResponse>(textTracksResponseString);
+            string vttUrl = "";
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(textTrack);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDY5Nzk0MzUsIm5iZiI6MTYwNjk3OTQzNSwiZXhwIjoxNjA2OTgzMzM1LCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lMRGJvOU5acEZIRHhQNDk2L0plcFZOTjI3K3gxM3kyc3lxcWxWTS8rV0hLN3U4QSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6InR6Y1dqUXpVQkUtUUpzRlYtQ1U4QUEiLCJ2ZXIiOiIxLjAifQ.AWOcmMMMaj722KiYTuCoVZZ4G5BrxpsK__gsNZmdgod3iGf1AzTaH90q6c9Uu9albeI2NYR79r6GJX0wETCd5XFGkxhsJ3D_Pb5HH4VdG9qatoWoz62EmigoPg3bZgIyEMB7tL2DPqS40OiOnFwAYbOpiGvWa1edarOgMSV6Fro1fbJV1Ue0TZZdeQJ7mjqA176j-efU74M8Uqms_IhnHPZv8olpRxVUeOnhIwc6FMqIA4HbYTOY6XgffRH_1fj4tUlHMhVTBptSpDZSfPvUry1pcaKZq7i0HjYcIAbBXmzGiYPGh_7JyEzn-A2SpbCLy72gE1KSxoRDpmnkINHuew");
+                HttpResponseMessage response = await client.GetAsync(textTrack);
+                if (response.IsSuccessStatusCode)
+                {
+                    var textTracksResponseString = await response.Content.ReadAsStringAsync();
+                    TextTracksResponse textTracksResponse = JsonConvert.DeserializeObject<TextTracksResponse>(textTracksResponseString);
 
-            //        vttUrl = textTracksResponse?.value?[0].url;
-            //    }
-            //}
+                    vttUrl = textTracksResponse?.value?[0].url;
+                }
+            }
 
-            //using (HttpClient client = new HttpClient())
-            //{
-            //    client.BaseAddress = new Uri(vttUrl);
-            //    client.DefaultRequestHeaders.Accept.Clear();
-            //    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            //    client.DefaultRequestHeaders.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDY5Nzk0MzUsIm5iZiI6MTYwNjk3OTQzNSwiZXhwIjoxNjA2OTgzMzM1LCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lMRGJvOU5acEZIRHhQNDk2L0plcFZOTjI3K3gxM3kyc3lxcWxWTS8rV0hLN3U4QSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6InR6Y1dqUXpVQkUtUUpzRlYtQ1U4QUEiLCJ2ZXIiOiIxLjAifQ.AWOcmMMMaj722KiYTuCoVZZ4G5BrxpsK__gsNZmdgod3iGf1AzTaH90q6c9Uu9albeI2NYR79r6GJX0wETCd5XFGkxhsJ3D_Pb5HH4VdG9qatoWoz62EmigoPg3bZgIyEMB7tL2DPqS40OiOnFwAYbOpiGvWa1edarOgMSV6Fro1fbJV1Ue0TZZdeQJ7mjqA176j-efU74M8Uqms_IhnHPZv8olpRxVUeOnhIwc6FMqIA4HbYTOY6XgffRH_1fj4tUlHMhVTBptSpDZSfPvUry1pcaKZq7i0HjYcIAbBXmzGiYPGh_7JyEzn-A2SpbCLy72gE1KSxoRDpmnkINHuew");
-            //    HttpResponseMessage response = await client.GetAsync(vttUrl);
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        // Get the vtt file content
-            //    }
-            //}
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(vttUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Add("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDY5Nzk0MzUsIm5iZiI6MTYwNjk3OTQzNSwiZXhwIjoxNjA2OTgzMzM1LCJhY3IiOiIxIiwiYWlvIjoiRTJSZ1lMRGJvOU5acEZIRHhQNDk2L0plcFZOTjI3K3gxM3kyc3lxcWxWTS8rV0hLN3U4QSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZjUzZmNlOC1kZWY2LTRhZWItOGQzMC1iMTU4ZTdiMWNmODMiLCJhcHBpZGFjciI6IjIiLCJmYW1pbHlfbmFtZSI6IkRoYW5kZSIsImdpdmVuX25hbWUiOiJEaXBhayIsImlwYWRkciI6IjgyLjIwMy4zMy4xMzQiLCJuYW1lIjoiRGhhbmRlLCBEaXBhayAoQ2FwaXRhIFNvZnR3YXJlKSIsIm9pZCI6ImJhN2RiNzVhLTJlZjUtNDI1Zi04ZWM2LWY5ODZhMWQzMjYyMiIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMzg1NzQ5ODctMjkzNTM4NjgxOS0yMDkzNjg2MTAtMjQ3Nzg2MCIsInB1aWQiOiIxMDAzM0ZGRkFGRENFMjJFIiwicmgiOiIwLkFBQUFnNjNhSHUteVBVaUI4U3hJYUM5QTdPajhVOF8yM3V0S2pUQ3hXT2V4ejRNQ0FJOC4iLCJzY3AiOiJhY2Nlc3NfbWljcm9zb2Z0c3RyZWFtX3NlcnZpY2UiLCJzdWIiOiJOVm43Z0RZVk5hTjVRbjd0TWhLVWdJbVVwOFBTWVU4UEZYeGxJVEdielFnIiwidGlkIjoiMWVkYWFkODMtYjJlZi00ODNkLTgxZjEtMmM0ODY4MmY0MGVjIiwidW5pcXVlX25hbWUiOiJQMTA0NzkxNTZAY2FwaXRhLmNvLnVrIiwidXBuIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInV0aSI6InR6Y1dqUXpVQkUtUUpzRlYtQ1U4QUEiLCJ2ZXIiOiIxLjAifQ.AWOcmMMMaj722KiYTuCoVZZ4G5BrxpsK__gsNZmdgod3iGf1AzTaH90q6c9Uu9albeI2NYR79r6GJX0wETCd5XFGkxhsJ3D_Pb5HH4VdG9qatoWoz62EmigoPg3bZgIyEMB7tL2DPqS40OiOnFwAYbOpiGvWa1edarOgMSV6Fro1fbJV1Ue0TZZdeQJ7mjqA176j-efU74M8Uqms_IhnHPZv8olpRxVUeOnhIwc6FMqIA4HbYTOY6XgffRH_1fj4tUlHMhVTBptSpDZSfPvUry1pcaKZq7i0HjYcIAbBXmzGiYPGh_7JyEzn-A2SpbCLy72gE1KSxoRDpmnkINHuew");
+                HttpResponseMessage response = await client.GetAsync(vttUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    // Get the vtt file content
+                }
+            }
 
             //Create Word file
             string fileName = System.IO.Path.GetRandomFileName()+ ".docx";
