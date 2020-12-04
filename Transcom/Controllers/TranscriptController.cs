@@ -125,7 +125,7 @@ namespace Transcom.Controllers
                                     sentence = sentence + " ";
                                 }
                             }
-                            //Remove small talks from trans script
+                            //Remove small talks from trans script sentences
                             RemoveSmallTalks(sentences);
                         }
                         catch (Exception ex)
