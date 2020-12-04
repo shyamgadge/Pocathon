@@ -107,7 +107,7 @@ namespace Transcom.Controllers
                             var mostLikelyFormat = parser.GetMostLikelyFormat(fileStream.Name);
                             var items = parser.ParseStream(fileStream, Encoding.UTF8, mostLikelyFormat);
 
-                            string sentence = string.Empty;
+                            string sentence = " ";
                             foreach (var item in items)
                             {
                                 foreach (var line in item.Lines)
