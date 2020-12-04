@@ -32,7 +32,7 @@ namespace Transcom.Controllers
             List<string> sentences = new List<string>();
             string[] s = urlName.Split('/');
             string videoId = s.Last();
-            string token = "";
+            string token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDcwNjI3NzgsIm5iZiI6MTYwNzA2Mjc3OCwiZXhwIjoxNjA3MDY2Njc4LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOFJBQUFBYitBUWNzVVp1WFNFbWJoL0tPWkUyWis4d1RKQk1oMFFlZGJlbnBEUjZsMD0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiY2Y1M2ZjZTgtZGVmNi00YWViLThkMzAtYjE1OGU3YjFjZjgzIiwiYXBwaWRhY3IiOiIyIiwiZmFtaWx5X25hbWUiOiJEaGFuZGUiLCJnaXZlbl9uYW1lIjoiRGlwYWsiLCJpcGFkZHIiOiI4Mi4yMDMuMzMuMTM0IiwibmFtZSI6IkRoYW5kZSwgRGlwYWsgKENhcGl0YSBTb2Z0d2FyZSkiLCJvaWQiOiJiYTdkYjc1YS0yZWY1LTQyNWYtOGVjNi1mOTg2YTFkMzI2MjIiLCJvbnByZW1fc2lkIjoiUy0xLTUtMjEtMjM4NTc0OTg3LTI5MzUzODY4MTktMjA5MzY4NjEwLTI0Nzc4NjAiLCJwdWlkIjoiMTAwMzNGRkZBRkRDRTIyRSIsInJoIjoiMC5BQUFBZzYzYUh1LXlQVWlCOFN4SWFDOUE3T2o4VThfMjN1dEtqVEN4V09leHo0TUNBSTguIiwic2NwIjoiYWNjZXNzX21pY3Jvc29mdHN0cmVhbV9zZXJ2aWNlIiwic3ViIjoiTlZuN2dEWVZOYU41UW43dE1oS1VnSW1VcDhQU1lVOFBGWHhsSVRHYnpRZyIsInRpZCI6IjFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYyIsInVuaXF1ZV9uYW1lIjoiUDEwNDc5MTU2QGNhcGl0YS5jby51ayIsInVwbiI6IlAxMDQ3OTE1NkBjYXBpdGEuY28udWsiLCJ1dGkiOiJ5OEoyaW9OWHdVbWdCb2ZFSmJkREFBIiwidmVyIjoiMS4wIn0.jiUwHP37PixDpHiNbO0m5th3f7Xo0Pn-pepr_-lce2SRcwAQChXPpVAVS1EgHq0bMpTRxMPNgRnW80hGvxdMwNMmTQCZJmY48XS-UnrzVV_0Zl-OcglCiYreTXZdTE0zgBYV38eNGAgm74g-0yTiuvBfBVTJXNwYqirQJsq_4bG9iievkE8E_cxfLppCdGTN1AwLXcWKaY5sq1fpoJ9LA5L8bgB9cQXE1cLyLwi9nHUiz2ZoYI-DaU_LLfE31Xp9wOxNSwAa_h0Hfc2WRcrzS250EOmaB0Kl_ssLmNeoFTeoUsG8KgIYzuRb_AxzYFpKH75EnanpecwASPdaH8vNfQ";
             string textTrackUrl = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "/texttracks?api-version=1.4-private";
             string titleUrl = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "?$expand=creator,tokens,status,liveEvent,extensions&api-version=1.4-private";
 
@@ -138,7 +138,7 @@ namespace Transcom.Controllers
             return sentences;
         }
 
-        private void RemoveSmallTalks(List<string> sentences)
+        private static void RemoveSmallTalks(List<string> sentences)
         {
             List<string> smallTalks = new List<string>();
             foreach (string sm in SmallTalkDictionary.smallTalks)
