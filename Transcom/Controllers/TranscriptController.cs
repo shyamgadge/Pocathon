@@ -30,7 +30,7 @@ namespace Transcom.Controllers
         {
             if (string.IsNullOrWhiteSpace(urlName))
             {
-                ModelState.AddModelError("urlName", "Recording URL are required.");
+                ModelState.AddModelError("urlName", "Recording URL is required.");
                 return View();
             }
 

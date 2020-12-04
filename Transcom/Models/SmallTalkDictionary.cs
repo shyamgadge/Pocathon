@@ -21,7 +21,11 @@ namespace Transcom.Models
             "I am fine",
             "good morning",
             "good afternoon",
-            "Let's get started"
+            "Let's get started",
+            "is my screen visible",
+            "wait for one more minute",
+            "have a good day",
+            "share my screen"
 
         };
     }
