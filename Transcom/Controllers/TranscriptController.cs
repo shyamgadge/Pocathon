@@ -32,7 +32,7 @@ namespace Transcom.Controllers
             List<string> sentences = new List<string>();
             string[] s = urlName.Split('/');
             string videoId = s.Last();
-            string token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDcwMjA3MDQsIm5iZiI6MTYwNzAyMDcwNCwiZXhwIjoxNjA3MDI0NjA0LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOFJBQUFBZUZqYmtEWFpYNlNYUGE4K2tCckxVUFhJa3Z4bWEyME12d3krTHdiWFF4dz0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiY2Y1M2ZjZTgtZGVmNi00YWViLThkMzAtYjE1OGU3YjFjZjgzIiwiYXBwaWRhY3IiOiIyIiwiZmFtaWx5X25hbWUiOiJHYWRnZSIsImdpdmVuX25hbWUiOiJTaHlhbSIsImlwYWRkciI6IjEwMy4xMTAuMjU0LjE0MCIsIm5hbWUiOiJHYWRnZSwgU2h5YW0gKENhcGl0YSBTb2Z0d2FyZSkiLCJvaWQiOiIzNDYxMDZmMy03YWE5LTRhNmYtOGNkMi1kZTNlNjNkOWU3OTIiLCJvbnByZW1fc2lkIjoiUy0xLTUtMjEtMjM4NTc0OTg3LTI5MzUzODY4MTktMjA5MzY4NjEwLTI1NTc1MDQiLCJwdWlkIjoiMTAwMzIwMDA0OTIyQUJDQyIsInJoIjoiMC5BQUFBZzYzYUh1LXlQVWlCOFN4SWFDOUE3T2o4VThfMjN1dEtqVEN4V09leHo0TUNBT2cuIiwic2NwIjoiYWNjZXNzX21pY3Jvc29mdHN0cmVhbV9zZXJ2aWNlIiwic3ViIjoiVy15ZlNoMHZQZEt4Q2NCR1hMVUlEeG5jUHJTdXBRNnBpSGt0VXc5alAyYyIsInRpZCI6IjFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYyIsInVuaXF1ZV9uYW1lIjoiUDEwNDk3Mjc3QGNhcGl0YS5jby51ayIsInVwbiI6IlAxMDQ5NzI3N0BjYXBpdGEuY28udWsiLCJ1dGkiOiJtSktFOHNadmxrLWV4dzkyMXhzN0FBIiwidmVyIjoiMS4wIn0.KnEP7oB7aZXDoJEKHYoX3vi4O4jcw0u__FXof6Us5jbXkghLSlYlhHT86VIPEUdY6qTijmoCn6JaD9I8vfwO_FmX4f7PxZl7R2j5XvGfEZ-6RsGax6uJ0HfaTGCbp1dQD2xovY6o2Kn7yuP57leNqY2XFzhs5k_ZyHrGdHaFyDUTSpDJQhtInH9VpCfds5y3TxAubJSJTUE4VJnItlQHrIJyaBO7Zrmo42-SH9wHCnoasHTHwKHBbhM5g_UpTREhaUK6-FSv9Hp2jZEfc3yZAzo7v-wUSjukTT7R1EsUSz3hplLu5WKt1iheGRPywW6pzji2BF8xlq_nYly5XWV0QA";
+            string token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDcwNTQxNTIsIm5iZiI6MTYwNzA1NDE1MiwiZXhwIjoxNjA3MDU4MDUyLCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOFJBQUFBL3M4YlZPdmRXZnAvdjV6amJrWXc1cFgvYTVUSnp5R1dybk13aEtISW82ND0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiY2Y1M2ZjZTgtZGVmNi00YWViLThkMzAtYjE1OGU3YjFjZjgzIiwiYXBwaWRhY3IiOiIyIiwiZmFtaWx5X25hbWUiOiJEaGFpZ3VkZSIsImdpdmVuX25hbWUiOiJBaml0IiwiaXBhZGRyIjoiNDkuMzUuMTk2LjYiLCJuYW1lIjoiRGhhaWd1ZGUsIEFqaXQgKENhcGl0YSBTb2Z0d2FyZSkiLCJvaWQiOiI1OWU5OGEyNC1jZGZhLTQxN2ItOWU3My0xZGQ5M2QzYjI0NmMiLCJvbnByZW1fc2lkIjoiUy0xLTUtMjEtMjM4NTc0OTg3LTI5MzUzODY4MTktMjA5MzY4NjEwLTI1NTc1NjIiLCJwdWlkIjoiMTAwMzIwMDA0M0QxMTJBMCIsInJoIjoiMC5BQUFBZzYzYUh1LXlQVWlCOFN4SWFDOUE3T2o4VThfMjN1dEtqVEN4V09leHo0TUNBTG8uIiwic2NwIjoiYWNjZXNzX21pY3Jvc29mdHN0cmVhbV9zZXJ2aWNlIiwic3ViIjoib3NOZUlNaEM2Zm13czNXakMxRTZUTmtfbHE2OVFwQTZSS2xNV3BqOEZlZyIsInRpZCI6IjFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYyIsInVuaXF1ZV9uYW1lIjoiUDEwNDk0NzY1QGNhcGl0YS5jby51ayIsInVwbiI6IlAxMDQ5NDc2NUBjYXBpdGEuY28udWsiLCJ1dGkiOiJ3Z0VkbmhWdDZrcXpoRE1SRkhabkFBIiwidmVyIjoiMS4wIn0.uN5eaWiulaW76FAjkBhhFWLBoiLIrYc9vOhiOS1vveUUdoVmK7GbUEpwf9Ugkv3FdFdDBymrzTTwc-LkbZeYxGCOPadh9C70a_FUhV8woPWRwreYWZ_aK9SeuidhonpxycTuOu27u9EHRfoDHLuVKT_h5BqfFccH3lzXyEzhZOD93OBy1SgDjoz1AtTnru7fc_031VzOZCV6T8s7sMqlPYeZGbr01Er9oKWKhv8uJXMHjjAJcjHdpdATgxxrIlWvFC-9PrTnUqj9G163rGhhqwjEBseo8kKhvZs5dVnEzCUsBJrDYgymXebnpGhOnzUPtSPoflQ9kMqRMs7_aAYSYQ";
 
             string textTrackUrl = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "/texttracks?api-version=1.4-private";
             string titleUrl = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "?$expand=creator,tokens,status,liveEvent,extensions&api-version=1.4-private";
@@ -93,13 +93,15 @@ namespace Transcom.Controllers
                 var content = client.DownloadData(vttUrl);
                 using (var stream = new MemoryStream(content))
                 {
-                    FileStream file = new FileStream("C:\\file.txt", FileMode.Create, FileAccess.Write);
+                    string fileName = "file.txt";
+                    string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+                    FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write);
                     stream.WriteTo(file);
                     file.Close();
 
                     SubtitlesParser.Classes.Parsers.SubParser parser = new SubtitlesParser.Classes.Parsers.SubParser();
 
-                    using (var fileStream = new FileStream("C:\\file.txt", FileMode.Open, FileAccess.Read))
+                    using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
                     {
                         try
                         {
@@ -216,7 +218,7 @@ namespace Transcom.Controllers
 
                 foreach (var line in conversation)
                 {
-                    Paragraph paragraph1 = CreateParagraphForBullets(line);
+                    Paragraph paragraph1 = CreateParagraphForBullets(line);                  
                     body.Append(paragraph1);
                 }
 
