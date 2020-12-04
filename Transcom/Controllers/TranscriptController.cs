@@ -120,7 +120,7 @@ namespace Transcom.Controllers
                             var mostLikelyFormat = parser.GetMostLikelyFormat(fileStream.Name);
                             var items = parser.ParseStream(fileStream, Encoding.UTF8, mostLikelyFormat);
 
-                            string sentence = string.Empty;
+                            string sentence = " ";
                             foreach (var item in items)
                             {
                                 foreach (var line in item.Lines)
@@ -138,7 +138,7 @@ namespace Transcom.Controllers
                                     sentence = sentence + " ";
                                 }
                             }
-                            //Remove small talks from trans script
+                            //Remove small talks from trans script sentences
                             RemoveSmallTalks(sentences);
                         }
                         catch (Exception ex)
