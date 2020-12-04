@@ -2,36 +2,58 @@
 @{
     ViewData["Title"] = "Home Page";
     string path = Convert.ToString(TempData["Path"]);
+
 }
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<div class="container">
 
-  
+
+<div class="container">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <label>
+                Please correct the following issues:
+            </label>
+            @Html.ValidationSummary()
+        </div>
+    }
     <div class="panel panel-default">
-        <div class="panel-heading"><h2> Smart Transcript</h2></div>
+        <div class="panel-heading"><h2> Transcom</h2></div>
         <div class="panel-body">
 
             <form class="form-horizontal" method="post" enctype="multipart/form-data" asp-controller="Transcript" asp-action="Index">
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="url">URL:</label>
                     <div class="col-sm-7">
-                        <input type="text" class="form-control" id="txtUrl" placeholder="Enter URL Name" name="urlName">
+                        <input type="text" class="form-control" id="txtUrl" placeholder="Enter recording URL" name="urlName">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-4">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button id="btnFetch" type="submit" class="btn btn-primary">Convert to transcribe</button>
                         @if (!string.IsNullOrWhiteSpace(path))
                         {
                             <a asp-action="Download" asp-route-path="@path" asp-route-foo="bar" aria-hidden="false" class="btn btn-success"> <i class="glyphicon glyphicon-download-alt" aria-hidden="false">&nbsp;Download</i></a>
                         }
-                    </div>
-
+                    </div>                  
                 </div>
             </form>
         </div>
     </div>
-    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $('#btnFetch').on('click', function () {
+            var e = this;
+            setTimeout(function () {
+                e.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"  style="width: 2rem; height: 2rem;" aria-hidden="true"></span> Converting...';
+                e.disabled = true;
+            }, 0);
+            return true;
+        });
+    });
+</script>
