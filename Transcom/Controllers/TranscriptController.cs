@@ -28,6 +28,12 @@ namespace Transcom.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string urlName)
         {
+            if (string.IsNullOrWhiteSpace(urlName))
+            {
+                ModelState.AddModelError("urlName", "Recording URL are required.");
+                return View();
+            }
+
             string title = "Transcom";
             List<string> sentences = new List<string>();
             string[] s = urlName.Split('/');
@@ -45,6 +51,11 @@ namespace Transcom.Controllers
                 TextTracksResponse textTracksResponse = JsonConvert.DeserializeObject<TextTracksResponse>(textTracksResponseString);
                 vttUrl = textTracksResponse?.value?[0].url;
             }
+            else
+            {
+                ModelState.AddModelError("urlName", " Video not found in URL.");
+                return View();
+            }
 
 
             HttpResponseMessage titleResponse = await GetHttpResponse(titleUrl, token);
@@ -54,8 +65,9 @@ namespace Transcom.Controllers
                 var responseJObject = JObject.Parse(textTracksResponseString);
                 title = (string)responseJObject["name"];
             }
+            
 
-            sentences = ExtractVttContent( token, vttUrl);
+            sentences = ExtractVttContent(token, vttUrl);
 
             //Create Word file
             string fileName = title + ".docx";
@@ -63,6 +75,7 @@ namespace Transcom.Controllers
             CreateWordprocessingDocument(path, title, sentences);
             TempData["Path"] = "";
             TempData["Path"] = path;
+
             return View();
         }
 
@@ -80,7 +93,7 @@ namespace Transcom.Controllers
             }
         }
 
-        private static List<string> ExtractVttContent( string token, string vttUrl)
+        private static List<string> ExtractVttContent(string token, string vttUrl)
         {
             List<string> sentences = new List<string>();
             using (var client = new WebClient())
@@ -276,8 +289,8 @@ namespace Transcom.Controllers
             new RunProperties(),
             new Text(text) { Space = SpaceProcessingModeValues.Preserve }));
             return paragraph;
-        }   
-        
+        }
+
         private static void GenerateHeader(HeaderPart part)
         {
             Header header1 = new Header() { MCAttributes = new MarkupCompatibilityAttributes() { Ignorable = "w14 w15 w16se wp14" } };
@@ -427,7 +440,7 @@ namespace Transcom.Controllers
 
         }
 
-        
+
         public IActionResult Index()
         {
             return View();
