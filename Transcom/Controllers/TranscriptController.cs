@@ -33,48 +33,55 @@ namespace Transcom.Controllers
                 ModelState.AddModelError("urlName", "Recording URL are required.");
                 return View();
             }
-
             string title = "Transcom";
-            List<string> sentences = new List<string>();
-            string[] s = urlName.Split('/');
-            string videoId = s.Last();
-            string token = "";
-            string textTrackUrl = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "/texttracks?api-version=1.4-private";
-            string titleUrl = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "?$expand=creator,tokens,status,liveEvent,extensions&api-version=1.4-private";
+            try
+            {              
+                List<string> sentences = new List<string>();
+                string[] s = urlName.Split('/');
+                string videoId = s.Last();
+                string token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCIsImtpZCI6ImtnMkxZczJUMENUaklmajRydDZKSXluZW4zOCJ9.eyJhdWQiOiJodHRwczovLyoubWljcm9zb2Z0c3RyZWFtLmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYy8iLCJpYXQiOjE2MDcwNzU3NTksIm5iZiI6MTYwNzA3NTc1OSwiZXhwIjoxNjA3MDc5NjU5LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOFJBQUFBZUpDWnk5eWdOdFE2a2NOemdyc3lFWE9YcWR5M2RBZHdWZ2NRUml5WnNuQT0iLCJhbXIiOlsicHdkIl0sImFwcGlkIjoiY2Y1M2ZjZTgtZGVmNi00YWViLThkMzAtYjE1OGU3YjFjZjgzIiwiYXBwaWRhY3IiOiIyIiwiZmFtaWx5X25hbWUiOiJEaGFpZ3VkZSIsImdpdmVuX25hbWUiOiJBaml0IiwiaXBhZGRyIjoiNDkuMzUuMTk2LjYiLCJuYW1lIjoiRGhhaWd1ZGUsIEFqaXQgKENhcGl0YSBTb2Z0d2FyZSkiLCJvaWQiOiI1OWU5OGEyNC1jZGZhLTQxN2ItOWU3My0xZGQ5M2QzYjI0NmMiLCJvbnByZW1fc2lkIjoiUy0xLTUtMjEtMjM4NTc0OTg3LTI5MzUzODY4MTktMjA5MzY4NjEwLTI1NTc1NjIiLCJwdWlkIjoiMTAwMzIwMDA0M0QxMTJBMCIsInJoIjoiMC5BQUFBZzYzYUh1LXlQVWlCOFN4SWFDOUE3T2o4VThfMjN1dEtqVEN4V09leHo0TUNBTG8uIiwic2NwIjoiYWNjZXNzX21pY3Jvc29mdHN0cmVhbV9zZXJ2aWNlIiwic3ViIjoib3NOZUlNaEM2Zm13czNXakMxRTZUTmtfbHE2OVFwQTZSS2xNV3BqOEZlZyIsInRpZCI6IjFlZGFhZDgzLWIyZWYtNDgzZC04MWYxLTJjNDg2ODJmNDBlYyIsInVuaXF1ZV9uYW1lIjoiUDEwNDk0NzY1QGNhcGl0YS5jby51ayIsInVwbiI6IlAxMDQ5NDc2NUBjYXBpdGEuY28udWsiLCJ1dGkiOiIzVnpNNG1NWWRrT2FJeXdsQ2lGdEFBIiwidmVyIjoiMS4wIn0.v8oFKKzKStxY7ik1WN0zlkayLkoxXj7eoYlGYlR_4_E2QGR_jx8VsbDaZdH7tcgWZAS3AitJgQG6oeeKjA7zy9PhOYMvov1UFR3jgVYwmsSBKvJHT6OUD4nLeoQOY5jElTd_RSbVE87wBae2opQX7mU2suWP987m0Aw3UuM_A2ZQwoEo_JWdAJ8Na26BqnwapmanALLJUUUxTqM3DeperksPN-fZ8x4mLvjZwFLcFcKXIy9-ZNWBMIWiBd2OrKPhKU2xIa8vjDeTJqLxvrY80O9aJBxzNff5JiYW9EBJQ39aPCYNZuTQuVyOrS-jTPaq3b1k2y1jGu4E4TuUmOt6YQ";
+                string textTrackUrl = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "/texttracks?api-version=1.4-private";
+                string titleUrl = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "?$expand=creator,tokens,status,liveEvent,extensions&api-version=1.4-private";
 
-            string vttUrl = "";
+                string vttUrl = "";
 
-            HttpResponseMessage urlResponse = await GetHttpResponse(textTrackUrl, token);
-            if (urlResponse.IsSuccessStatusCode)
-            {
-                var textTracksResponseString = await urlResponse.Content.ReadAsStringAsync();
-                TextTracksResponse textTracksResponse = JsonConvert.DeserializeObject<TextTracksResponse>(textTracksResponseString);
-                vttUrl = textTracksResponse?.value?[0].url;
+                HttpResponseMessage urlResponse = await GetHttpResponse(textTrackUrl, token);
+                if (urlResponse.IsSuccessStatusCode)
+                {
+                    var textTracksResponseString = await urlResponse.Content.ReadAsStringAsync();
+                    TextTracksResponse textTracksResponse = JsonConvert.DeserializeObject<TextTracksResponse>(textTracksResponseString);
+                    vttUrl = textTracksResponse?.value?[0].url;
+                }
+                else
+                {
+                    ModelState.AddModelError("urlName", " Video not found in URL.");
+                    return View();
+                }
+
+
+                HttpResponseMessage titleResponse = await GetHttpResponse(titleUrl, token);
+                if (titleResponse.IsSuccessStatusCode)
+                {
+                    var textTracksResponseString = await titleResponse.Content.ReadAsStringAsync();
+                    var responseJObject = JObject.Parse(textTracksResponseString);
+                    title = (string)responseJObject["name"];
+                }
+
+
+                sentences = ExtractVttContent(token, vttUrl);
+
+                //Create Word file
+                string fileName = title + ".docx";
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+                CreateWordprocessingDocument(path, title, sentences);
+                TempData["Path"] = "";
+                TempData["Path"] = path;
             }
-            else
+            catch(Exception ex)
             {
-                ModelState.AddModelError("urlName", " Video not found in URL.");
+                ModelState.AddModelError("file", string.Format("Can you please close {0} file.", title));
                 return View();
             }
-
-
-            HttpResponseMessage titleResponse = await GetHttpResponse(titleUrl, token);
-            if (titleResponse.IsSuccessStatusCode)
-            {
-                var textTracksResponseString = await titleResponse.Content.ReadAsStringAsync();
-                var responseJObject = JObject.Parse(textTracksResponseString);
-                title = (string)responseJObject["name"];
-            }
-            
-
-            sentences = ExtractVttContent(token, vttUrl);
-
-            //Create Word file
-            string fileName = title + ".docx";
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
-            CreateWordprocessingDocument(path, title, sentences);
-            TempData["Path"] = "";
-            TempData["Path"] = path;
 
             return View();
         }

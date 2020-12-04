@@ -36,7 +36,7 @@
                         <button id="btnFetch" type="submit" class="btn btn-primary">Convert to transcribe</button>
                         @if (!string.IsNullOrWhiteSpace(path))
                         {
-                            <a asp-action="Download" asp-route-path="@path" asp-route-foo="bar" aria-hidden="false" class="btn btn-success"> <i class="glyphicon glyphicon-download-alt" aria-hidden="false">&nbsp;Download</i></a>
+                        <a asp-action="Download" asp-route-path="@path" asp-route-foo="bar" aria-hidden="false" class="btn btn-success"> <i class="glyphicon glyphicon-download-alt" aria-hidden="false"></i>&nbsp;Download</a>
                         }
                     </div>                  
                 </div>
