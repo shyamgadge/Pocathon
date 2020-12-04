@@ -23,7 +23,7 @@ namespace Transcom.Controllers
     public class TranscriptController : Controller
     {
 
-        
+
 
         [HttpPost]
         public async Task<IActionResult> Index(string urlName)
@@ -37,7 +37,7 @@ namespace Transcom.Controllers
             string titleUrl = "https://euno-1.api.microsoftstream.com/api/videos/" + videoId + "?$expand=creator,tokens,status,liveEvent,extensions&api-version=1.4-private";
 
             string vttUrl = "";
-         
+
             HttpResponseMessage urlResponse = await GetHttpResponse(textTrackUrl, token);
             if (urlResponse.IsSuccessStatusCode)
             {
@@ -46,7 +46,7 @@ namespace Transcom.Controllers
                 vttUrl = textTracksResponse?.value?[0].url;
             }
 
-           
+
             HttpResponseMessage titleResponse = await GetHttpResponse(titleUrl, token);
             if (titleResponse.IsSuccessStatusCode)
             {
@@ -197,20 +197,16 @@ namespace Transcom.Controllers
                 ParagraphProperties paragraphProperties1 = new ParagraphProperties();
                 ParagraphStyleId paragraphStyleId1 = new ParagraphStyleId() { Val = "Bold" };
                 Justification justification1 = new Justification() { Val = JustificationValues.Center };
-                FontSize fontSize1 = new FontSize() { Val = "50" };
                 ParagraphMarkRunProperties paragraphMarkRunProperties1 = new ParagraphMarkRunProperties();
 
                 paragraphProperties1.Append(paragraphStyleId1);
                 //paragraphProperties1.Append(fontSize1);
                 paragraphProperties1.Append(justification1);
-
                 paragraphProperties1.Append(paragraphMarkRunProperties1);
 
                 Run run = new Run();
-                RunProperties runProperties1 = new RunProperties();
-                FontSize fontSize2 = new FontSize() { Val = "36" };
+                RunProperties runProperties1 = new RunProperties(new FontSize() { Val = "50" }, new Bold() { Val = OnOffValue.FromBoolean(true) });
 
-                runProperties1.Append(fontSize2);
                 Text text = new Text() { Text = title };
 
                 // siga a ordem 
@@ -229,7 +225,7 @@ namespace Transcom.Controllers
 
                 foreach (var line in conversation)
                 {
-                    Paragraph paragraph1 = CreateParagraphForBullets(line);                  
+                    Paragraph paragraph1 = CreateParagraphForBullets(line, wordDocument);
                     body.Append(paragraph1);
                 }
 
@@ -243,15 +239,15 @@ namespace Transcom.Controllers
 
         private Paragraph CreateParagraph(string text, JustificationValues justification)
         {
+
             Paragraph paragraph = new Paragraph(
                         new ParagraphProperties(
                           new ParagraphStyleId() { Val = "Bold" },
                           new Justification() { Val = justification },
-                          new ParagraphMarkRunProperties(),
-                          new FontSize() { Val = "12" }
+                          new ParagraphMarkRunProperties()
                           ),
                         new Run(
-                          new RunProperties(),
+                          new RunProperties(new FontSize() { Val = "30" }, new Bold() { Val = OnOffValue.FromBoolean(true) }),
                           new Text(text) { Space = SpaceProcessingModeValues.Preserve }));
 
             return paragraph;
@@ -269,18 +265,19 @@ namespace Transcom.Controllers
               new Text(text) { Space = SpaceProcessingModeValues.Preserve }));
             return paragraph;
         }
-        private Paragraph CreateParagraphForBullets(string text)
+        private Paragraph CreateParagraphForNumber(string text)
         {
             Paragraph paragraph = new Paragraph(
-            new ParagraphProperties(
-              new NumberingProperties(
-                new NumberingLevelReference() { Val = 0 },
-                new NumberingId() { Val = 2 })),
-            new Run(
-              new RunProperties(),
-              new Text(text) { Space = SpaceProcessingModeValues.Preserve }));
+          new ParagraphProperties(
+            new NumberingProperties(
+              new NumberingLevelReference() { Val = 0 },
+              new NumberingId() { Val = 2 })),
+          new Run(
+            new RunProperties(),
+            new Text(text) { Space = SpaceProcessingModeValues.Preserve }));
             return paragraph;
-        }
+        }   
+        
         private static void GenerateHeader(HeaderPart part)
         {
             Header header1 = new Header() { MCAttributes = new MarkupCompatibilityAttributes() { Ignorable = "w14 w15 w16se wp14" } };
@@ -360,7 +357,77 @@ namespace Transcom.Controllers
             settingsPart.Settings.Save();
         }
 
+        public Paragraph CreateParagraphForBullets(string conversationTxt, WordprocessingDocument _wordprocessingDocument)
+        {
+            // Introduce bulleted numbering in case it will be needed at some point
+            NumberingDefinitionsPart numberingPart = _wordprocessingDocument.MainDocumentPart.NumberingDefinitionsPart;
+            if (numberingPart == null)
+            {
+                numberingPart = _wordprocessingDocument.MainDocumentPart.AddNewPart<NumberingDefinitionsPart>("NumberingDefinitionsPart001");
+                Numbering element = new Numbering();
+                element.Save(numberingPart);
+            }
 
+            // Insert an AbstractNum into the numbering part numbering list.  The order seems to matter or it will not pass the 
+            // Open XML SDK Productity Tools validation test.  AbstractNum comes first and then NumberingInstance and we want to
+            // insert this AFTER the last AbstractNum and BEFORE the first NumberingInstance or we will get a validation error.
+            var abstractNumberId = numberingPart.Numbering.Elements<AbstractNum>().Count() + 1;
+            var abstractLevel = new Level(new NumberingFormat() { Val = NumberFormatValues.Bullet }, new LevelText() { Val = "·" }) { LevelIndex = 0 };
+            var abstractNum1 = new AbstractNum(abstractLevel) { AbstractNumberId = abstractNumberId };
+
+            if (abstractNumberId == 1)
+            {
+                numberingPart.Numbering.Append(abstractNum1);
+            }
+            else
+            {
+                AbstractNum lastAbstractNum = numberingPart.Numbering.Elements<AbstractNum>().Last();
+                numberingPart.Numbering.InsertAfter(abstractNum1, lastAbstractNum);
+            }
+
+            // Insert an NumberingInstance into the numbering part numbering list.  The order seems to matter or it will not pass the 
+            // Open XML SDK Productity Tools validation test.  AbstractNum comes first and then NumberingInstance and we want to
+            // insert this AFTER the last NumberingInstance and AFTER all the AbstractNum entries or we will get a validation error.
+            var numberId = numberingPart.Numbering.Elements<NumberingInstance>().Count() + 1;
+            NumberingInstance numberingInstance1 = new NumberingInstance() { NumberID = numberId };
+            AbstractNumId abstractNumId1 = new AbstractNumId() { Val = abstractNumberId };
+            numberingInstance1.Append(abstractNumId1);
+
+            if (numberId == 1)
+            {
+                numberingPart.Numbering.Append(numberingInstance1);
+            }
+            else
+            {
+                var lastNumberingInstance = numberingPart.Numbering.Elements<NumberingInstance>().Last();
+                numberingPart.Numbering.InsertAfter(numberingInstance1, lastNumberingInstance);
+            }
+
+            Run runlist = new Run(new Text(conversationTxt));
+
+            // Create items for paragraph properties
+            var numberingProperties = new NumberingProperties(new NumberingLevelReference() { Val = 0 }, new NumberingId() { Val = numberId });
+            var spacingBetweenLines1 = new SpacingBetweenLines() { After = "0" };  // Get rid of space between bullets
+            var indentation = new Indentation() { Left = "720", Hanging = "360" };  // correct indentation 
+
+            ParagraphMarkRunProperties paragraphMarkRunProperties1 = new ParagraphMarkRunProperties();
+            RunFonts runFonts1 = new RunFonts() { Ascii = "Symbol", HighAnsi = "Symbol" };
+            paragraphMarkRunProperties1.Append(runFonts1);
+
+            // create paragraph properties
+            var paragraphProperties = new ParagraphProperties(numberingProperties, spacingBetweenLines1, indentation, paragraphMarkRunProperties1);
+
+            // Create paragraph 
+            var newPara = new Paragraph(paragraphProperties);
+
+            // Add run to the paragraph
+            newPara.Append(runlist);
+
+            return newPara;
+
+        }
+
+        
         public IActionResult Index()
         {
             return View();
